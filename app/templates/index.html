@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+    <style>
+        body { margin: 40px; }
+        .event { margin: 10px 0; padding: 5px; background: #eee; }
+    </style>
+</head>
+<body>
+    <h2>GitHub Events</h2>
+    <div id="list"></div>
+
+    <script>
+        function update() {
+            fetch('/webhook/events')
+                .then(r => r.json())
+                .then(d => {
+                    let html = '';
+                    if (d.events) {
+                        d.events.forEach(e => {
+                            html += '<div class="event">' + e + '</div>';
+                        });
+                    }
+                    document.getElementById('list').innerHTML = html || 'No events';
+                });
+        }
+        
+        update();
+        setInterval(update, 15000);
+    </script>
+</body>
+</html>
